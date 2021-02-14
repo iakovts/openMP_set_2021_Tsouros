@@ -4,7 +4,7 @@ import time
 import numpy as np
 
 from matplotlib import pyplot as plt
-from matplotlib import animation
+from matplotlib import animation, cm
 
 
 class AnimateWave:
@@ -100,8 +100,17 @@ class AnimateWave:
         return self.p
 
 
-a = AnimateWave()
-a()
-plt.show()
-# a.subplotting()
-# plt.show()
+def plot_3d_surf(data):
+    fig, ax, = plt.subplots(subplot_kw={"projection": "3d"})
+    x = np.arange(data.shape[0])
+    y = np.arange(data.shape[1])
+    X, Y = np.meshgrid(y, x)
+    surf = ax.plot_surface(X, Y, data, cmap=cm.plasma, linewidth=0, antialiased=False)
+    fig.colorbar(surf, shrink=0.5, aspect=5)
+    plt.show()
+
+
+if __name__ == "__main__":
+    a = AnimateWave()
+    a()
+    plt.show()
