@@ -1,4 +1,5 @@
 *.txt
 *.txt.*
 ./*
-*.~
+*~
+.ipynb_checkpoints/
