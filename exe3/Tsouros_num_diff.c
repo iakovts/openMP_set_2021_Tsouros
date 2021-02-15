@@ -85,12 +85,10 @@ int main(int argc, char **argv) {
   } else
     snprintf(filename, sizeof(filename), "%s", "res_serial.txt");
   fil = fopen(filename, "w");
-  for (i = 0; i <=N; i++) {
-      fprintf(fil, " %f", res[i]);
-    }
-  
-  free(x);
-  free(res);
+  for (i = 0; i <= N; i++) {
+    fprintf(fil, " %f", res[i]);
   }
 
-
+  free(x);
+  free(res);
+}
