@@ -11,7 +11,7 @@ run: build
 
 verify: run build
 	@./$(OUT_FILE) -N 2000 -t 1
-	python compare_res.py --files res4_threads.txt res_serial.txt
+	python ../compare_res.py --files res4_threads.txt res_serial.txt
 
 clean:
 	@rm -f res*_threads.txt
