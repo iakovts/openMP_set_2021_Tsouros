@@ -59,8 +59,8 @@ int main(int argc, char **argv) {
     }
   }
 
-#pragma omp parallel num_threads(num_t) shared(x, res) private(i)              \
-    firstprivate(x_init, step, N) default(none) if (paral_flag)
+#pragma omp parallel num_threads(num_t) shared(res) private(i) \
+  firstprivate(step, N, x) default(none) if (paral_flag)
   {
 #pragma omp for
     for (i = 0; i <= N; i++) {
