@@ -19,6 +19,7 @@ int main(int argc, char **argv) {
         break;
       case 't':
         sscanf(argv[i + 1], "%d", &num_t);
+        break;
       }
     }
   }
