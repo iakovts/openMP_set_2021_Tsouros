@@ -76,8 +76,14 @@ int main(int argc, char **argv) {
   double fTimeEnd = omp_get_wtime();
 
   // I/O operations
-  printf("Threads Used: %d \nWall clock time:  = %.10f \n\n", num_t,
-         (fTimeEnd - fTimeStart));
+  /* Report Time */
+  if (paral_flag){
+    printf("[NumDiff] Num Threads %d \nTime: %f seconds\n\n", num_t, (fTimeEnd - fTimeStart));
+  } else {
+    printf("[NumDiff] Serial Execution \nTime: %f seconds\n\n", (fTimeEnd - fTimeStart));
+  }
+  /* Write to file */
+
   FILE *fil;
   char filename[256];
   if (paral_flag) {
