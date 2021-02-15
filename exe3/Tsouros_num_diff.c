@@ -74,6 +74,23 @@ int main(int argc, char **argv) {
   }
   // Record end time
   double fTimeEnd = omp_get_wtime();
+
+  // I/O operations
+  printf("Threads Used: %d \nWall clock time:  = %.10f \n\n", num_t,
+         (fTimeEnd - fTimeStart));
+  FILE *fil;
+  char filename[256];
+  if (paral_flag) {
+    snprintf(filename, sizeof(filename), "res%d_threads.txt", num_t);
+  } else
+    snprintf(filename, sizeof(filename), "%s", "res_serial.txt");
+  fil = fopen(filename, "w");
+  for (i = 0; i <=N; i++) {
+      fprintf(fil, " %f", res[i]);
+    }
+  
   free(x);
   free(res);
-}
+  }
+
+
