@@ -26,19 +26,19 @@ int main(int argc, char **argv) {
     if (argv[i][0] == '-') {
       switch (argv[i][1]) {
       case 'N':
-        sscanf(argv[i + 1], "%d", &N);
+        sscanf(argv[i + 1], "%d", &N); // Points to differentiate.
         break;
       case 's':
-        sscanf(argv[i + 1], "%lf", &x_init);
+        sscanf(argv[i + 1], "%lf", &x_init); // Initial X
         break;
       case 'f':
-        sscanf(argv[i + 1], "%lf", &x_fin);
+        sscanf(argv[i + 1], "%lf", &x_fin); // Final x
         break;
       case 't':
-        sscanf(argv[i + 1], "%d", &num_t);
+        sscanf(argv[i + 1], "%d", &num_t); // No of threads to use
         break;
       case 'p':
-        paral_flag = 1;
+        paral_flag = 1; // Parallel flag
         break;
       }
     }
@@ -59,8 +59,8 @@ int main(int argc, char **argv) {
     }
   }
 
-#pragma omp parallel num_threads(num_t) shared(res) private(i) \
-  firstprivate(step, N, x) default(none) if (paral_flag)
+#pragma omp parallel num_threads(num_t) shared(res) private(i)                 \
+    firstprivate(step, N, x) default(none) if (paral_flag)
   {
 #pragma omp for
     for (i = 0; i <= N; i++) {
