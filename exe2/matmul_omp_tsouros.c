@@ -16,7 +16,7 @@ double ** array2D (int nRows, int nColumns);
 
 int main(int argc, char **argv) {
 
-  int i, j, k, paral_flag=0, num_t=1;
+  int i, j, k, paral_flag=0, num_t=1, small_mat=0;
   /* double sum; */
   double **a, **b, **c;
 
@@ -39,7 +39,17 @@ int main(int argc, char **argv) {
       }
     }
   }
+
+  /* Force serial execution for small matrices. Parallelization below
+this limit results in increase in execution time. Also set small matrix flag
+for writing to file */
+  if (ROWS < 32 || COLUMNS < 32) {
+    paral_flag = 0;
+    small_mat = 1;
+  }
+
   /* Initialize */
+
   for (i=0; i<ROWS; i++) {
     for (j=0; j<COLUMNS; j++) {
       a[i][j] = 3.0;
@@ -81,9 +91,9 @@ int main(int argc, char **argv) {
     Multiply Matrices 
     (SQUARE)
   */
-#pragma omp parallel num_threads(num_t) shared(a,b,c) private(i,j,k) if (paral_flag)
+#pragma omp parallel num_threads(num_t) shared(a,b,c) private(i,j,k)  if (paral_flag)
   {
-#pragma omp for
+#pragma omp for 
   for (i=0; i<ROWS; i++) {
     for (j=0; j<COLUMNS; j++) {
       for (k=0; k<COLUMNS; k++) {
@@ -119,7 +129,11 @@ int main(int argc, char **argv) {
   char filename[256];
   if (paral_flag) {
     snprintf(filename, sizeof(filename), "res%d_threads.txt", num_t);
-  } else {
+  }
+  else if (paral_flag==0 && small_mat) {
+    snprintf(filename, sizeof(filename), "res%d_threads.txt", num_t);
+  }
+  else {
     snprintf(filename, sizeof(filename), "%s", "res_serial.txt");
   }
   fil = fopen(filename, "w");
