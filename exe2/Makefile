@@ -6,10 +6,10 @@ build:
 
 run: build
 	@for number in 1 2 4; do \
-		./$(OUT_FILE) -t $$number -N 2000 -p; \
+		./$(OUT_FILE) -t $$number -p; \
 		done
 verify: build run
-	@./$(OUT_FILE) -N 2000 -t 1
+	@./$(OUT_FILE) -t 1
 	python ../compare_res.py --files res4_threads.txt res_serial.txt
 
 clean:
