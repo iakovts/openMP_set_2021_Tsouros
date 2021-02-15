@@ -92,7 +92,7 @@ for small matrices for the first part of exercise 2. */
     Multiply Matrices 
     (SQUARE)
   */
-#pragma omp parallel num_threads(num_t) shared(a,b,c) private(i,j,k)  if (paral_flag)
+#pragma omp parallel num_threads(num_t) shared(a,b,c) private(i,j,k) default(none)  if (paral_flag)
   {
 #pragma omp for 
   for (i=0; i<ROWS; i++) {
