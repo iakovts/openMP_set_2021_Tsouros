@@ -9,7 +9,7 @@ int main(int argc, char **argv) {
   double dx, dt, c, temp_M, x_ini = 0.0, x_fin = 12.0, t_ini = 0.0,
                             t_fin = 5 * M_PI, fTimeStart, fTimeEnd;
   double a = sqrt(2 / (pow(M_PI, 2.0)));
-  int i, j, N = 200, num_t = 2, M;
+  int i, j, N = 200, num_t = 2, M, paral_flag=0;
 
   for (i = 1; i < argc; i++) {
     if (argv[i][0] == '-') {
@@ -19,6 +19,9 @@ int main(int argc, char **argv) {
         break;
       case 't':
         sscanf(argv[i + 1], "%d", &num_t);
+        break;
+      case 'p':
+        paral_flag=1;
         break;
       }
     }
@@ -43,7 +46,7 @@ int main(int argc, char **argv) {
   x = (double *)malloc(N * sizeof(double));
   t = (double *)malloc(M * sizeof(double));
 
-#pragma omp parallel num_threads(num_t) firstprivate(i, j)                     \
+#pragma omp parallel num_threads(num_t) firstprivate(i, j) if (paral_flag) \
     shared(x, t, u, dt, dx, N, M, c) default(none)
   {
 #pragma omp for
@@ -72,7 +75,7 @@ int main(int argc, char **argv) {
     }
   }
   for (j = 0; j < M - 1; j++) {
-#pragma omp parallel num_threads(num_t) firstprivate(N, j) private(i)          \
+#pragma omp parallel num_threads(num_t) firstprivate(N, j) private(i) if (paral_flag) \
     shared(u, c) default(none)
     {
 #pragma omp for
@@ -87,7 +90,9 @@ int main(int argc, char **argv) {
   printf("Threads Used: %d \nWall clock time:  = %.10f \n\n", num_t, (fTimeEnd - fTimeStart));
   FILE *fil;
   char filename[256];
-  snprintf(filename, sizeof(filename), "res%d_threads.txt", num_t);
+  if(paral_flag){
+    snprintf(filename, sizeof(filename), "res%d_threads.txt", num_t);}
+  else snprintf(filename, sizeof(filename), "%s", "res_serial.txt");
   fil = fopen(filename, "w");
   for (i = 0; i < N; i++) {
     for (j = 0; j < M; j++) {
