@@ -17,7 +17,7 @@ double ** array2D (int nRows, int nColumns);
 int main(int argc, char **argv) {
 
   int i, j, k, paral_flag=0, num_t=1;
-  double sum;
+  /* double sum; */
   double **a, **b, **c;
 
   /* Allocate Arrays */
@@ -81,7 +81,7 @@ int main(int argc, char **argv) {
     Multiply Matrices 
     (SQUARE)
   */
-#pragma omp parallel shared(a,b,c) private(i,j,k) if (paral_flag)
+#pragma omp parallel num_threads(num_t) shared(a,b,c) private(i,j,k) if (paral_flag)
   {
 #pragma omp for
   for (i=0; i<ROWS; i++) {
@@ -97,7 +97,11 @@ int main(int argc, char **argv) {
   double end_time = omp_get_wtime();
 
   /* Report Time */
-  printf("Time: %f seconds\n\n", end_time - start_time);
+  if (paral_flag){
+    printf("[Matmul] Num Threads %d \nTime: %f seconds\n\n", num_t, (end_time - start_time));
+  } else {
+    printf("[Matmul] Serial Execution \nTime: %f seconds\n\n", (end_time - start_time));
+  }
 
   /* PRINT RESULT */
   if (ROWS < 10)
