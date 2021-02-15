@@ -81,9 +81,9 @@ int main(int argc, char **argv) {
     Multiply Matrices 
     (SQUARE)
   */
-#pragma omp parallel shared(a,b,c) private(i,j,k)
+#pragma omp parallel shared(a,b,c) private(i,j,k) if (paral_flag)
   {
-#pragma omp for 
+#pragma omp for
   for (i=0; i<ROWS; i++) {
     for (j=0; j<COLUMNS; j++) {
       for (k=0; k<COLUMNS; k++) {
@@ -107,6 +107,21 @@ int main(int argc, char **argv) {
         printf("%f ", c[i][j]);
       }
       printf("\n");
+    }
+  }
+
+  /* Write to file */
+  FILE *fil;
+  char filename[256];
+  if (paral_flag) {
+    snprintf(filename, sizeof(filename), "res%d_threads.txt", num_t);
+  } else {
+    snprintf(filename, sizeof(filename), "%s", "res_serial.txt");
+  }
+  fil = fopen(filename, "w");
+  for (i = 0; i < ROWS; i++) {
+    for (j = 0; j < COLUMNS; j++) {
+      fprintf(fil, " %f", c[i][j]);
     }
   }
 
