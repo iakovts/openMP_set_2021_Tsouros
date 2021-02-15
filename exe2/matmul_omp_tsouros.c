@@ -1,6 +1,6 @@
 /****************************************
  ***
- *** SQUARE Matrix Multiplication (serial)
+ *** SQUARE Matrix Multiplication
  ***
  ****************************************/
 
@@ -8,8 +8,8 @@
 #include <stdlib.h>
 #include <omp.h>
 
-#define ROWS 512
-#define COLUMNS 512
+#define ROWS 768
+#define COLUMNS 768
 
 /* Prototype */
 double ** array2D (int nRows, int nColumns);
@@ -42,7 +42,8 @@ int main(int argc, char **argv) {
 
   /* Force serial execution for small matrices. Parallelization below
 this limit results in increase in execution time. Also set small matrix flag
-for writing to file */
+for writing to file. Comment out for comparing results of parallelization
+for small matrices for the first part of exercise 2. */
   if (ROWS < 32 || COLUMNS < 32) {
     paral_flag = 0;
     small_mat = 1;
@@ -58,31 +59,31 @@ for writing to file */
     }
   }
 
-  if (ROWS < 10) 
-  {
-    /* TEST PRINT */  
-    for (i=0; i<ROWS; i++) {
-      for (j=0; j<COLUMNS; j++) {
-        printf("%f ", a[i][j]);
-      }
-      printf("\n");
-    }
+  /* if (ROWS < 10)  */
+  /* { */
+  /*   /\* TEST PRINT *\/   */
+  /*   for (i=0; i<ROWS; i++) { */
+  /*     for (j=0; j<COLUMNS; j++) { */
+  /*       printf("%f ", a[i][j]); */
+  /*     } */
+  /*     printf("\n"); */
+  /*   } */
 
-    for (i=0; i<ROWS; i++) {
-      for (j=0; j<COLUMNS; j++) {
-        printf("%f ", b[i][j]);
-      }
-      printf("\n");
-    }
+  /*   for (i=0; i<ROWS; i++) { */
+  /*     for (j=0; j<COLUMNS; j++) { */
+  /*       printf("%f ", b[i][j]); */
+  /*     } */
+  /*     printf("\n"); */
+  /*   } */
 
-    for (i=0; i<ROWS; i++) {
-      for (j=0; j<COLUMNS; j++) {
-        printf("%f ", c[i][j]);
-      }
-      printf("\n");
-    }
-    printf("\n");
-  }
+  /*   for (i=0; i<ROWS; i++) { */
+  /*     for (j=0; j<COLUMNS; j++) { */
+  /*       printf("%f ", c[i][j]); */
+  /*     } */
+  /*     printf("\n"); */
+  /*   } */
+  /*   printf("\n"); */
+  /* } */
 
   /* Start timing */
   double start_time = omp_get_wtime(); 
