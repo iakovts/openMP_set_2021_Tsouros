@@ -4,14 +4,11 @@ import argparse
 import numpy as np
 
 
-def argument_parse():
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--files", "-f", nargs="+", required=False)
-    return parser.parse_args()
-
-
-if __name__ == "__main__":
-    args = argument_parse()
+    args = parser.parse_args()
+    files = args.files
     if not args.files:
         files = glob.glob("res*_threads.txt")
     data = [np.fromfile(i, sep=" ") for i in files]
